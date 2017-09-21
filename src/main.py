@@ -19,7 +19,7 @@ def checkInARow(row):
     else:
         return DRAW    
 
-def checkRows(gameBoard):
+def checkHorizontal(gameBoard):
     finalResult = DRAW
     result = DRAW
     rowIdx = 0
@@ -37,7 +37,7 @@ def checkRows(gameBoard):
 
     return finalResult
 
-def checkCols(gameBoard):
+def checkVertical(gameBoard):
     finalResult = DRAW
     result = DRAW
     colIdx = 0
@@ -57,11 +57,59 @@ def checkCols(gameBoard):
         
         colIdx += 1
 
+    return finalResult
+
+def checkDiagonal(gameBoard):
+    finalResult = DRAW
+    
+    # Check first diagonal
+    row = [gameBoard[0][0], gameBoard[1][1], gameBoard[2][2]]
+    result = checkInARow(row)
+    
+    if (result == NOWINNER):
+        finalResult = NOWINNER
+    elif ((result == PLAYER1WON) or (result == PLAYER2WON)):
+        return result    
+    
+    # Check second diagonal    
+    row = [gameBoard[0][2], gameBoard[1][1], gameBoard[2][0]]
+    result = checkInARow(row)        
+        
+    if (result == NOWINNER):
+        finalResult = NOWINNER
+    elif ((result == PLAYER1WON) or (result == PLAYER2WON)):
+        return result
+
     return finalResult    
 
 def checkWinner(gameBoard):
-    #checkRows(gameBoard)
-    return checkCols(gameBoard)
+    finalResult = DRAW
+    
+    # Check for horizontal wins
+    result = checkHorizontal(gameBoard)
+    
+    if (result == NOWINNER):
+        finalResult = NOWINNER
+    elif ((result == PLAYER1WON) or (result == PLAYER2WON)):
+        return result    
+    
+    # Check for vertical wins
+    result = checkVertical(gameBoard)
+    
+    if (result == NOWINNER):
+        finalResult = NOWINNER
+    elif ((result == PLAYER1WON) or (result == PLAYER2WON)):
+        return result
+    
+    # Check for diagonal wins
+    result = checkDiagonal(gameBoard)
+    
+    if (result == NOWINNER):
+        finalResult = NOWINNER
+    elif ((result == PLAYER1WON) or (result == PLAYER2WON)):
+        return result
+        
+    return finalResult
 
 if __name__ == '__main__':
     # Run tests
